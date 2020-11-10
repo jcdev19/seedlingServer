@@ -5,7 +5,7 @@ require('./db/mongoose')
 // const cookieParser = require('cookie-parser')
 
 
-const dataRouter = require('./models/data')
+const dataRouter = require('./routers/data')
 // const shiftRouter = require('./routers/shift')
 // const requestRouter = require('./routers/request')
 // const jwt = require('jsonwebtoken')
@@ -45,8 +45,8 @@ const port = process.env.PORT || 3000
 //setup static directory to serve
 // app.use(express.static(publicDirectoryPath))
 // console.log(publicDirectoryPath)
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+// app.use(express.json())
+// app.use(express.urlencoded({ extended: false }))
 // app.use(cookieParser())
 app.use(dataRouter)
 // app.use(shiftRouter)
@@ -55,7 +55,7 @@ app.use(dataRouter)
 
 app.get('/', (req, res) => {
     try {
-        res.send('index')
+        res.send('indexsdd' + req.params)
     }
     catch {
         res.status(400).send()
