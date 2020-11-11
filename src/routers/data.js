@@ -15,4 +15,15 @@ router.get('/data/airTemp/:airTemp/soilTemp/:soilTemp/humidity/:humidity/soilMoi
     
 })
 
+router.get('/api/data', async(req,res) => {
+    try {
+        const labels = await Data.find({}, 'createdAt -_id').exec();
+        const data = await Data.find({}).exec();
+        // const soilTemp = await Data.find({}, 'airTemp').exec();
+        res.send({labels, data})
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
+
 module.exports = router

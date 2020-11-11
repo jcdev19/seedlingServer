@@ -19,6 +19,9 @@ const dataSchema = new mongoose.Schema({
     soilMoisture: {
         type: Number,
         trim: true
+    },
+    watered: {
+        type: Boolean
     }  
 }, {
     timestamps: true

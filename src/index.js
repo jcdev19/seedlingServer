@@ -55,7 +55,78 @@ app.use(dataRouter)
 
 app.get('/', (req, res) => {
     try {
-        res.send('indexsdd' + req.params)
+        res.send(`<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script><h1>indexsdd</h1>
+        <canvas id="tempChart" width="300" height="100"></canvas>
+        <canvas id="moistChart" width="300" height="100"></canvas>
+        <script>
+        const scale = (num, in_min, in_max, out_min, out_max) => {
+            return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+          }
+        fetch('/api/data')
+        .then(response => response.json())
+        .then(data => {
+            let dataLabels = data.labels.map(({ createdAt }) => createdAt)
+            let airTemp = data.data.map(({ airTemp }) => airTemp)
+            let humidity = data.data.map(({ humidity }) => humidity)
+            let soilTemp = data.data.map(({ soilTemp }) => soilTemp)
+            let soilMoisture = data.data.map(({ soilMoisture }) => scale(soilMoisture,660,200,0,100))
+            let soilMoistureRaw = data.data.map(({ soilMoisture }) => soilMoisture)
+            console.log('at', airTemp)
+            console.log('DA', dataLabels)
+            console.log(data)
+            var ctx = document.getElementById('tempChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: dataLabels,
+              datasets: [{ 
+                  data: airTemp,
+                  label: "Air Temp",
+                  borderColor: "#3e95cd",
+                  fill: false
+                }, { 
+                  data: soilTemp,
+                  label: "Soil Temp",
+                  borderColor: "#8e5ea2",
+                  fill: false
+                }, { 
+                  data: humidity,
+                  label: "Humidity",
+                  borderColor: "#3cba9f",
+                  fill: false
+                }
+              ]
+            },
+            options: {
+              title: {
+                display: true,
+                text: 'Temperature and humidity'
+              }
+            }
+          });
+          var ctx2 = document.getElementById('moistChart').getContext('2d');
+            var myChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+              labels: dataLabels,
+              datasets: [{ 
+                  data: soilMoisture,
+                  label: "Soil Moisture",
+                  borderColor: "#3e95cd",
+                  fill: false
+                }
+              ]
+            },
+            options: {
+              title: {
+                display: true,
+                text: 'Soil Moisture'
+              }
+            }
+          });
+        });
+        
+        </script>`+ req.params)
     }
     catch {
         res.status(400).send()
