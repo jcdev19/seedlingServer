@@ -11,7 +11,7 @@ const dataRouter = require('./routers/data')
 // const jwt = require('jsonwebtoken')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 
 // //Define paths for exprewss config
 // const publicDirectoryPath = path.join(__dirname, '../public/')
